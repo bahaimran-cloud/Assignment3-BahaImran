@@ -1,0 +1,39 @@
+<%- include('partials/header') %>
+    <div id="wrapper">
+        <header>
+            <h1>About Me</h1>
+            <%- include('partials/main_nav') %>
+        </header>
+
+        <article> <!-- Main Content -->
+            <h2>Introduction</h2>
+            <img src="/asset/images/Intro.jpg" alt="My Photo" width="250">
+            <p>Hello, my name is Baha Imran. I am a student currently studying at Ontario Tech University for the
+                Networking and IT Security program. I am passionate about technology, coding, and learning new skills.
+                Below is a video where you will find more information about me and my interests.</p>
+
+            <h2>My Video</h2> <!-- Embedded Video -->
+            <!--Video poster added but hidden due to autoplay-->
+            <video width="700" height="400" controls poster="Intro.jpg" preload="auto" autoplay muted loop>
+                <!-- Video with controls, autoplay and muted when website loads -->
+                <!-- Both MP4 and OGG formats and error handling -->
+                <source src="/asset/videos/Video.mp4" type="video/mp4">
+                <source src="/asset/videos/Video.ogv" type="video/ogg">
+                Your browser does not support the video tag.
+            </video>
+            <br>
+            <!-- Button to play/pause the video with JavaScript -->
+            <button onclick="playPause()">Play or Pause the Video</button>
+            <script>
+                const video = document.querySelector('video');
+                function playPause() {
+                    if (video.paused) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                }
+            </script>
+        </article>
+
+<%- include('partials/footer') %>

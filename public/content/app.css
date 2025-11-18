@@ -1,0 +1,219 @@
+@charset "UTF-8"; /* Ensure UTF-8 encoding for special characters */
+
+body { /* Global styles */
+  font-family: Verdana, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  /* Dark background gradient with light text for Desktop/laptop */
+  background: linear-gradient(135deg, #002F2F, #046380);
+  color: #EFECCA;
+}
+
+#wrapper { /* Main container for all page content */
+  width: 90%;
+  margin: auto;
+  background-color: #046380;
+  padding: 20px;
+}
+
+header { /* Header styles for all pages */
+  background-color: #002F2F;
+  padding: 15px;
+}
+
+header h1 { /* Very Top Header Styling for all pages (Rainbow Animation) */
+  text-align: center;
+  margin: 0px;
+  padding: 12px;
+  animation: Rainbow 2s infinite;
+}
+
+#welcome-box { /* Welcome box with hero image */
+  height: 400px;
+  /* Hero image centered and covering the box */
+  background: url("/asset/images/hero.png") no-repeat center;
+  /* Ensure the image covers the entire box */
+  background-size: cover;
+  /* Ensure the image is fixed in place */
+  background-attachment: fixed;
+  color: #EFECCA;
+  font-size: 24px;
+  text-align: center;
+  /*add shadow to text*/
+  /*text-shadow: horizontal-offset vertical-offset blur-radius color|none|initial|inherit;*/
+  text-shadow: 10px 10px 10px black;
+  padding-top: 150px;
+}
+mark { /* Hidden highlight for welcome box (To be used for mobile/tablet) */
+  color: inherit;
+  background-color: inherit;
+}
+
+nav a:hover { /* Hover effect for navigation links */
+  color: #EFECCA;
+  background-color: #002F2F;
+}
+
+article { /* Article content style for all pages */
+  margin: 20px 0;
+}
+
+footer { /* Footer styles for all pages */
+  background-color: #002F2F;
+  padding: 10px;
+  text-align: center;
+  color: #EFECCA;
+}
+
+img { /* Image Transition timer for all images */
+  transition: transform 0.5s;
+}
+img:hover { /* Image hover effect for all images */
+  transform: scale(1.1) rotate(2deg);
+}
+
+@keyframes Rainbow { /* Rainbow Animation for header 1*/
+  0% { color: red; }
+  14% { color: orange; }
+  28% { color: yellow; }
+  42% { color: green; }
+  57% { color: blue; }
+  71% { color: indigo; }
+  85% { color: violet; }
+  100% { color: red; }
+  
+}
+
+button:hover { /* Button hover effect for video play/pause */
+    background-color:beige; 
+    color:black; 
+    height:40px; 
+    border:2px #EFECCA solid; 
+    box-shadow: -10px -10px 5px black; 
+    border-radius: 5px; 
+}
+
+button { /* Button styles for video play/pause */
+  background-color:black;
+  margin: 15px; 
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  color:#EFECCA;
+  height:40px;
+  border:2px #EFECCA solid;
+  box-shadow: 10px 10px 5px black;
+  border-radius: 5px;
+}
+
+video { /* Video styles for all videos (about me video)*/
+    width: 50%; 
+    height: auto;
+    padding: 10px; 
+    /*Maintains video in own seperate block*/
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color:black; 
+    border:2px #EFECCA solid; 
+    box-shadow: 10px 10px 5px black;
+}
+
+form { /* Form styles for contact page */
+  margin: 40px;
+  max-width: 600px;
+  padding: 24px 28px;
+  background: #002F2F;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px #E6E2AF;
+  color: #EFECCA;
+}
+
+/* Project gallery boxes 1,2,3 */
+#project-gallery { /* Project Gallery Section */
+  margin-top: 30px;
+}
+
+.project-box1, .project-box2, .project-box3 { /* Individual Project Box Styles for boxes 1,2,3 */
+  float: left; /* Align boxes side by side */
+  width: 30%;
+  margin: 1.5%;
+  background-color: #002F2F;
+  color: #EFECCA;
+  padding: 10px;
+  /*Ensures padding and border are included in the width that is set for the box*/
+  box-sizing: border-box; /* Discussed in slideshow 4 lecture */
+  text-align: center;
+  opacity: 0; /* Initially hidden for animation */
+  
+}
+/* Slide in from bottom animation for project boxes */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.project-box1 {
+    animation: slideInUp 1s ease forwards; /*forwards keeps the final state of the animation*/
+}
+
+.project-box2 {
+    animation: slideInUp 2s ease forwards;
+}
+
+.project-box3 {
+    animation: slideInUp 3s ease forwards;
+}
+.project-box4 { /* Individual Project Box Styles for box 4 (Big Picture) */
+  float: left;
+  width: 96.5%;
+  margin: 1.5%;
+  background-color: #002F2F;
+  color: #EFECCA;
+  padding: 10px;
+  /*Ensures padding and border are included in the width that is set for the box*/
+  box-sizing: border-box;
+  text-align: center;
+  opacity: 0;
+  animation: slideInUp 1s ease forwards;
+}
+.project-box4 img:hover { /* Disable hover effect for big picture image */
+  transform: none;
+}
+.project-box1 img, .project-box2 img, .project-box3 img, .project-box4 img {
+  max-width: 100%;     /* make project images responsive */
+  height: auto;
+  margin-bottom: 10px;
+}
+
+#resume-box { /* Resume box styles */
+  width: 100%;
+  background-color: #002F2F;
+  color: #EFECCA;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-right: auto;
+  margin-left: auto;
+}
+#resume-box img {
+  max-width: 60%;     /* make resume image responsive */
+  height: auto;
+  margin-bottom: 10px;
+}
+#resume-box img:hover { /* Disable hover effect for resume image */
+  transform: none;
+}
+
+textarea { /* Textarea for comments on contact page */
+  width: 100%;     /* fills container width */
+  max-width: 100%;
+  box-sizing: border-box; 
+}

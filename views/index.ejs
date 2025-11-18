@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<%- include('partials/header') %> <!-- Include header partial for consistent head section -->
+  <div id="wrapper">
+    <header>
+      <h1><%= title %></h1>
+      <%- include('partials/main_nav') %>
+    </header>
+    <div id="welcome-box"> <!-- Initial Welcome Message With Picture background -->
+      <h2><mark>Welcome to My Portfolio</mark></h2>
+      <p><mark>Explore my work, learn more about me, and get in touch!</mark></p>
+    </div>
+    <article>
+      <h2>Welcome!</h2>
+      <p>This is my personal student portfolio website. Explore the links above to learn more about me, my projects, and
+        how to get in touch.</p>
+    </article>
+    <article id="resume-box"> <!-- Additional Resume Section with Image -->
+      <h2>My Resume</h2>
+      <img src="/asset/images/Resume.png" alt="Baha Imran Resume">
+      <p>You can view my resume above to learn more about my skills, experience, and education.</p>
+    </article>
+    <% include partials/footer %>
