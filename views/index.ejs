@@ -1,21 +1,21 @@
-<%- include('partials/header') %> <!-- Include header partial for consistent head section -->
+<%- include('partials/header') %>
   <div id="wrapper">
     <header>
       <h1><%= title %></h1>
       <%- include('partials/main_nav') %>
     </header>
     <div id="welcome-box"> <!-- Initial Welcome Message With Picture background -->
-      <h2><mark>Welcome to My Portfolio</mark></h2>
-      <p><mark>Explore my work, learn more about me, and get in touch!</mark></p>
+      <h2><mark>Welcome to Your Assessment Tracker</mark></h2>
+      <p><mark>Organize your work, complete tasks, and contact me for help!</mark></p>
     </div>
     <article>
       <h2>Welcome!</h2>
-      <p>This is my personal student portfolio website. Explore the links above to learn more about me, my projects, and
-        how to get in touch.</p>
+      <p>This is my Assessment Tracker website. Explore the links above to view your tasks or to contact me for help.</p>
     </article>
     <article id="resume-box"> <!-- Additional Resume Section with Image -->
-      <h2>My Resume</h2>
-      <img src="/asset/images/Resume.png" alt="Baha Imran Resume">
-      <p>You can view my resume above to learn more about my skills, experience, and education.</p>
+      <h2>Explore Your tasks</h2>
+      <img src="/assets/images/Resume.png" alt="Baha Imran Resume">
+      <p>This is a list of all your tasks. Click on a task to view details.</p>
     </article>
-    <% include partials/footer %>
+
+<%- include('partials/footer') %>

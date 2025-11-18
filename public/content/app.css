@@ -31,7 +31,7 @@ header h1 { /* Very Top Header Styling for all pages (Rainbow Animation) */
 #welcome-box { /* Welcome box with hero image */
   height: 400px;
   /* Hero image centered and covering the box */
-  background: url("/asset/images/hero.png") no-repeat center;
+  background: url("/assets/images/hero.png") no-repeat center;
   /* Ensure the image covers the entire box */
   background-size: cover;
   /* Ensure the image is fixed in place */
