@@ -78,11 +78,11 @@ router.post('/edit/:id', async (req, res, next) => {
             error: 'Error updating assessment'
         });
     }
-});
+})
 
 router.get('/delete/:id', async (req, res, next) => {
     try {
-        await Assessment.findByIdAndRemove(req.params.id);
+        await Assessment.findByIdAndDelete(req.params.id);
         res.redirect('/assessments');
     } catch (err) {
         console.error(err);

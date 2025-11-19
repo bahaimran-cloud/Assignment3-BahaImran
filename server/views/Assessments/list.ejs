@@ -1,11 +1,16 @@
 <% include ../partials/header %> <!-- Include header partial for consistent head section -->
-<% include ../partials/main_nav %>
-<main class ="container row align-items-center">
+
+<div id="wrapper">  <!-- Content visible in the browser's window is inside the wrapper -->
+  <header>
+    <h1>Assessments</h1>
+    <% include ../partials/main_nav %>
+  </header>
+  <main class="container py-4">
     <div class="row">
-        <div class="offset-md-1 col-md-10">
+        <div class=" col-md-10">
             <h1>Assessments List</h1>
             <br>
-            <table class="table table-bordered table-striped table-hover">
+            <table class="table table-bordered table-striped table-hover table-dark">
                 <!--Header Row-->
                 <tr class="d-flex">
                     <th class="text-center col-2">Assessment</th>
@@ -29,6 +34,7 @@
                             <a href="/assessments/edit/<%= assessments[count]._id %>" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
+                            <br></br>
                             <a href="/assessments/delete/<%= assessments[count]._id %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
                                 <i class="fas fa-trash"></i> Delete
                             </a>
@@ -39,6 +45,4 @@
         </div>
     </div>
 </main>
-<br> </br>
-<br> </br>
 <% include ../partials/footer %>
