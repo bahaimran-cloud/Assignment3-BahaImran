@@ -1,0 +1,63 @@
+<% include ../partials/header %> <!-- Include header partial for consistent head section -->
+<% include ../partials/main_nav %> <!-- Include main nav partial for consistent nav section -->
+<!-- Content -->
+ <div class="container">
+    <div class="row">
+        <div class="offset-md-3 col-md-6">
+            <h1>Add Assessment</h1>
+
+            <form class="form" method="post">
+                <div class="form-group">
+                    <label for="assessmentName">Assessment</label>
+                    <input type="text" class="form-control" id="assessmentName" name="assessmentName" required>
+                </div>
+                <div class="form-group">
+                    <label for="course">Course</label>
+                    <input type="text" class="form-control" id="course" name="course" required>
+                </div>
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <select class="form-control" id="type" name="type" required>
+                        <option value="" disabled selected>Select Type</option>
+                        <option value="Quiz">Quiz</option>
+                        <option value="Test">Test</option>
+                        <option value="Assignment">Assignment</option>
+                        <option value="Lab">Lab</option>
+                        <option value="Project">Project</option>
+                        <option value="Midterm">Midterm</option>
+                        <option value="Final">Final</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select class="form-control" id="status" name="status" required>
+                        <option value="" disabled selected>Select status</option>
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Submitted">Submitted</option>
+                        <option value="Graded">Graded</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dueDate">Due Date</label>
+                    <input type="date" class="form-control" id="dueDate" name="dueDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <input type="text" class="form-control" id="notes" name="notes" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Submit
+                    </button>
+                    <a href="/assessments" class="btn btn-danger">
+                        <i class="fas fa-user-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+ </div>
+
+<% include ../partials/footer %> <!-- Include footer partial for consistent sidebar section -->

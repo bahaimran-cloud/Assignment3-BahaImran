@@ -3,33 +3,33 @@
 <main class ="container row align-items-center">
     <div class="row">
         <div class="offset-md-1 col-md-10">
-            <h1>Assessments</h1>
+            <h1>Assessments List</h1>
             <br>
             <table class="table table-bordered table-striped table-hover">
                 <!--Header Row-->
                 <tr class="d-flex">
-                    <th class="text-center col-2">Company</th>
-                    <th class="text-center col-2">Position</th>
-                    <th class="text-center col-2">Date Applied</th>
+                    <th class="text-center col-2">Assessment</th>
+                    <th class="text-center col-2">Course</th>
+                    <th class="text-center col-2">Type</th>
+                    <th class="text-center col-2">Due Date</th>
                     <th class="text-center col-2">Status</th>
-                    <th class="text-center col-2">Location</th>
-                    <th class="text-center col-2">Job Type </th>
+                    <th class="text-center col-2">Notes</th>
                     <th class="text-center col-2">Actions</th>
                 </tr>
                 <!--for/while loop-->
-                <% for (let count=0; count<applications.length; count++) { %>
+                <% for (let count=0; count<assessments.length; count++) { %>
                     <tr class="d-flex">
-                        <td class="text-center col-2"><%= Assessments[count].assessmentName %></td>
-                        <td class="text-center col-2"><%= Assessments[count].course %></td>
-                        <td class="text-center col-2"><%= Assessments[count].type %></td>
-                        <td class="text-center col-2"><%= Assessments[count].dueDate %></td>
-                        <td class="text-center col-2"><%= Assessments[count].status %></td>
-                        <td class="text-center col-2"><%= Assessments[count].notes %></td>
+                        <td class="text-center col-2"><%= assessments[count].assessmentName %></td>
+                        <td class="text-center col-2"><%= assessments[count].course %></td>
+                        <td class="text-center col-2"><%= assessments[count].type %></td>
+                        <td class="text-center col-2"><%= assessments[count].dueDate %></td>
+                        <td class="text-center col-2"><%= assessments[count].status %></td>
+                        <td class="text-center col-2"><%= assessments[count].notes %></td>
                         <td class="text-center col-2">
-                            <a href="/applications/edit/<%= applications[count]._id %>" class="btn btn-warning btn-sm">
+                            <a href="/assessments/edit/<%= assessments[count]._id %>" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <a href="/applications/delete/<%= applications[count]._id %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                            <a href="/assessments/delete/<%= assessments[count]._id %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
                                 <i class="fas fa-trash"></i> Delete
                             </a>
                         </td>

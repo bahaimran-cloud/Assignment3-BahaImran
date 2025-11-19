@@ -2,23 +2,21 @@ let express = require('express');
 let router = express.Router();
 let mongoose = require('mongoose');
 let Assessment = require('../models/Assessment');
-const SchoolAssessment = require('../models/Assessment');
 
 
-// FINISH THE RESTT
-
-router.get('/', (async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
-        const assesments = await Assessment.find({});
-        console.log(assesments);
-        res.render('Assessments/list', {title: 'Assessments', assesments: assesments});
+        const assessments = await Assessment.find({});
+        console.log(assessments);
+        res.render('Assessments/list', { title: 'Assessments', assessments: assessments });
     } catch (err) {
         console.error(err);
-        res.render('JobApplication/list', {
-            error:'Error on server'
-        })
+        res.render('Assessments/list', {
+            title: 'Assessments',
+            error: 'Error on server'
+        });
     }
-}));
+});
 router.get('/add',async(req, res, next) => {
     try {
         res.render('Assessments/add', {title: 'Add Assessments'});
@@ -30,5 +28,65 @@ router.get('/add',async(req, res, next) => {
         })
     }
 
+});
+router.post('/add', async (req, res, next) => {
+    try {
+        let newAssessment = new Assessment({
+            assessmentName: req.body.assessmentName,
+            course: req.body.course,
+            type: req.body.type,
+            dueDate: req.body.dueDate,
+            status: req.body.status,
+            notes: req.body.notes,
+        });
+        await newAssessment.save();
+        res.redirect('/assessments');
+    } catch (err) {
+        console.error(err);
+        res.render('Assessments/add', {
+            title: 'Add Assessment',
+            error: 'Error adding assessment'
+        });
+    }
+});
+
+router.get('/edit/:id', async (req, res, next) => {
+    try {
+        const assessment = await Assessment.findById(req.params.id);
+        res.render('Assessments/edit', { title: 'Edit Assessment', assessment: assessment });
+    } catch (err) {
+        console.error(err);
+        res.redirect('/assessments');
+    }
+});
+
+router.post('/edit/:id', async (req, res, next) => {
+    try {
+        await Assessment.findByIdAndUpdate(req.params.id, {
+            assessmentName: req.body.assessmentName,
+            course: req.body.course,
+            type: req.body.type,
+            dueDate: req.body.dueDate,
+            status: req.body.status,
+            notes: req.body.notes,
+        });
+        res.redirect('/assessments');
+    } catch (err) {
+        console.error(err);
+        res.render('Assessments/edit', {
+            title: 'Edit Assessment',
+            error: 'Error updating assessment'
+        });
+    }
+});
+
+router.get('/delete/:id', async (req, res, next) => {
+    try {
+        await Assessment.findByIdAndRemove(req.params.id);
+        res.redirect('/assessments');
+    } catch (err) {
+        console.error(err);
+        res.redirect('/assessments');
+    }
 });
 module.exports = router;

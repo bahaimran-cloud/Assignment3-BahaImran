@@ -1,0 +1,61 @@
+<% include ../partials/header %> <!-- Include header partial for consistent head section -->
+<% include ../partials/main_nav %> <!-- Include main nav partial for consistent nav section -->
+<!-- Content -->
+ <div class="container">
+    <div class="row">
+        <div class="offset-md-3 col-md-6">
+            <h1>Edit Assessment</h1>
+
+            <form class="form" method="post">
+                <div class="form-group">
+                    <label for="assessmentName">Assessment</label>
+                    <input type="text" class="form-control" id="assessmentName" name="assessmentName" value="<%= assessment.assessmentName %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="course">Course</label>
+                    <input type="text" class="form-control" id="course" name="course" value="<%= assessment.course %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <select class="form-control" id="type" name="type" required>
+                        <option value="" disabled <%= !assessment.type ? 'selected' : '' %>>Select Type</option>
+                        <option value="Quiz" <%= assessment.type === 'Quiz' ? 'selected' : '' %>>Quiz</option>
+                        <option value="Test" <%= assessment.type === 'Test' ? 'selected' : '' %>>Test</option>
+                        <option value="Assignment" <%= assessment.type === 'Assignment' ? 'selected' : '' %>>Assignment</option>
+                        <option value="Lab" <%= assessment.type === 'Lab' ? 'selected' : '' %>>Lab</option>
+                        <option value="Project" <%= assessment.type === 'Project' ? 'selected' : '' %>>Project</option>
+                        <option value="Midterm" <%= assessment.type === 'Midterm' ? 'selected' : '' %>>Midterm</option>
+                        <option value="Final" <%= assessment.type === 'Final' ? 'selected' : '' %>>Final</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dueDate">Due Date</label>
+                    <input type="date" class="form-control" id="dueDate" name="dueDate" value="<%= assessment.dueDate  %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select class="form-control" id="status" name="status" required>
+                        <option value="" disabled <%= !assessment.status ? 'selected' : '' %>>Select status</option>
+                        <option value="Not Started" <%= assessment.status === 'Not Started' ? 'selected' : '' %>>Not Started</option>
+                        <option value="In Progress" <%= assessment.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                        <option value="Submitted" <%= assessment.status === 'Submitted' ? 'selected' : '' %>>Submitted</option>
+                        <option value="Graded" <%= assessment.status === 'Graded' ? 'selected' : '' %>>Graded</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <input type="text" class="form-control" id="notes" name="notes" value="<%= assessment.notes %>" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-check"></i> Update
+                    </button>
+                    <a href="/assessments" class="btn btn-danger">
+                        <i class="fas fa-user-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+ </div>
+<% include ../partials/footer %>
