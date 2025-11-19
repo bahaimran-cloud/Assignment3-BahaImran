@@ -8,7 +8,7 @@
   <article>
             <h2>Get in Touch</h2>
       <!-- Form to collect user input -->
-      <!-- The form uses mailto to send an email to the specified address with the subject Contact from Portfolio -->
+      <!-- The form uses mailto to send an email to the specified address with the subject Contact from website -->
       <form action="mailto:baha01ab@gmail.com?subject=Contact_from_Portfolio"
       enctype="text/plain" method="post" name="ContactForm"> 
         <!-- Input fields for user details -->
@@ -16,8 +16,8 @@
         <p><label>Last Name: <input type="text" name="Lastname" required></label></p>
         <p><label>Email: <input type="email" name="email" required></label></p>
         <p><label>Cell No: <input type="tel" name="phone" pattern="[0-9]{10}" required></label></p>
-        <!-- Dropdown to select how the user found the portfolio -->
-        <p><label id="where">Where did you discover this portfolio</label>
+        <!-- Dropdown to select how the user found the website -->
+        <p><label id="where">Where did you discover this website?</label>
         <select name="where">
             <option value="LinkedIn">LinkedIn Page</option>
             <option value="Given">From a friend</option>
@@ -26,7 +26,7 @@
             <option value="Other">Other</option>
         </select></p>
         <!-- Textarea for additional comments -->
-        <p><label>Comments: <textarea name="comments" rows="8"></textarea></label></p>
+        <p><label>What would you like help with: <textarea name="comments" rows="8"></textarea></label></p>
         <!-- Submit executes email commands and Reset button clears the form -->
         <p><input type="submit" value="Submit"></p>
         <p><input type="reset" value="Reset"></p>

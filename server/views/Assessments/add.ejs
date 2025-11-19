@@ -1,20 +1,27 @@
 <% include ../partials/header %> <!-- Include header partial for consistent head section -->
-<% include ../partials/main_nav %> <!-- Include main nav partial for consistent nav section -->
+
+<div id="wrapper">  <!-- Content visible in the browser's window is inside the wrapper -->
+  <header>
+    <h1>Assessments</h1>
+    <% include ../partials/main_nav %>
+  </header>
 <!-- Content -->
  <div class="container">
     <div class="row">
         <div class="offset-md-3 col-md-6">
             <h1>Add Assessment</h1>
-
+<!-- Form to collect user input  -->
             <form class="form" method="post">
                 <div class="form-group">
                     <label for="assessmentName">Assessment</label>
                     <input type="text" class="form-control" id="assessmentName" name="assessmentName" required>
                 </div>
+                <!-- Dropdown to select course -->
                 <div class="form-group">
                     <label for="course">Course</label>
                     <input type="text" class="form-control" id="course" name="course" required>
                 </div>
+                <!-- Dropdown to select type -->
                 <div class="form-group">
                     <label for="type">Type</label>
                     <select class="form-control" id="type" name="type" required>
@@ -28,6 +35,7 @@
                         <option value="Final">Final</option>
                     </select>
                 </div>
+                <!-- Dropdown to select status -->
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select class="form-control" id="status" name="status" required>
@@ -38,15 +46,17 @@
                         <option value="Graded">Graded</option>
                     </select>
                 </div>
+                <!-- Date picker to select due date -->
                 <div class="form-group">
                     <label for="dueDate">Due Date</label>
                     <input type="date" class="form-control" id="dueDate" name="dueDate" required>
                 </div>
-                
+                <!-- Text input for notes -->
                 <div class="form-group">
                     <label for="notes">Notes</label>
                     <input type="text" class="form-control" id="notes" name="notes" required>
                 </div>
+                <!-- Submit and cancel buttons -->
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-user-plus"></i> Submit

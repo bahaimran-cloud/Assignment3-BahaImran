@@ -10,7 +10,7 @@ let DB = require('./db'); // import the DB config file
 var indexRouter = require('../routes/index');
 var usersRouter = require('../routes/users');
 
-let AssessmentRouter = require('../routes/Assessment');
+let AssessmentRouter = require('../routes/Assessment'); // import the Assessment router
 
 var app = express();
 

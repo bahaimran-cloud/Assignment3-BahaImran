@@ -3,7 +3,7 @@ let router = express.Router();
 let mongoose = require('mongoose');
 let Assessment = require('../models/Assessment');
 
-
+// GET route for the Assessment List page - READ
 router.get('/', async (req, res, next) => {
     try {
         const assessments = await Assessment.find({});
@@ -17,6 +17,7 @@ router.get('/', async (req, res, next) => {
         });
     }
 });
+// GET and POST routes for adding a new Assessment - CREATE
 router.get('/add',async(req, res, next) => {
     try {
         res.render('Assessments/add', {title: 'Add Assessments'});
@@ -29,6 +30,7 @@ router.get('/add',async(req, res, next) => {
     }
 
 });
+// POST route for adding a new Assessment - CREATE
 router.post('/add', async (req, res, next) => {
     try {
         let newAssessment = new Assessment({
@@ -49,7 +51,7 @@ router.post('/add', async (req, res, next) => {
         });
     }
 });
-
+// GET and POST routes for editing an Assessment - UPDATE
 router.get('/edit/:id', async (req, res, next) => {
     try {
         const assessment = await Assessment.findById(req.params.id);
@@ -59,7 +61,7 @@ router.get('/edit/:id', async (req, res, next) => {
         res.redirect('/assessments');
     }
 });
-
+// POST route for editing an Assessment - UPDATE
 router.post('/edit/:id', async (req, res, next) => {
     try {
         await Assessment.findByIdAndUpdate(req.params.id, {
@@ -79,7 +81,7 @@ router.post('/edit/:id', async (req, res, next) => {
         });
     }
 })
-
+// GET route for deleting an Assessment - DELETE
 router.get('/delete/:id', async (req, res, next) => {
     try {
         await Assessment.findByIdAndDelete(req.params.id);
