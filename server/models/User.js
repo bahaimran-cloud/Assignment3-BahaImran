@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// passport-local-mongoose publishes a default export in recent versions
-// so grab the function regardless of module format
-const passportLocalMongooseModule = require('passport-local-mongoose');
-const passportLocalMongoose = passportLocalMongooseModule.default || passportLocalMongooseModule;
+const passportLocalMongoose = require('passport-local-mongoose');
 
 // Create the User Schema
 const UserSchema = new Schema({
