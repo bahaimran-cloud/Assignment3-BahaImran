@@ -30,13 +30,43 @@
             <i class="fa-solid fa-lg fa-tasks"></i> Assessments
           </a>
           <ul class="dropdown-menu">
-            <!-- View All and Add Assessment links -->
+            <!-- View All link -->
             <li><a class="dropdown-item" href="/assessments"><i class="fa-solid fa-list"></i> View All</a></li>
-            <!--add Assessment link -->
-            <li><a class="dropdown-item" href="/assessments/add"><i class="fa-solid fa-plus"></i> Add Assessment</a></li>           
+            <!-- Add Assessment link - Only show if authenticated -->
+            <% if (locals.isAuthenticated) { %>
+              <li><a class="dropdown-item" href="/assessments/add"><i class="fa-solid fa-plus"></i> Add Assessment</a></li>
+            <% } %>
           </ul>
         </li>
-        
+      </ul>
+      
+      <!-- Right side navigation -->
+      <ul class="navbar-nav ms-auto">
+        <% if (locals.isAuthenticated) { %>
+          <!-- Show user info and logout if authenticated -->
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">
+              <i class="fas fa-user"></i> Welcome, <%= displayName %>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/logout">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </li>
+        <% } else { %>
+          <!-- Show login/register if not authenticated -->
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/login">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/register">
+              <i class="fas fa-user-plus"></i> Register
+            </a>
+          </li>
+        <% } %>
       </ul>
     </div>
   </div>

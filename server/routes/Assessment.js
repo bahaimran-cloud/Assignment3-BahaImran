@@ -2,13 +2,17 @@ let express = require('express');
 let router = express.Router();
 let mongoose = require('mongoose');
 let Assessment = require('../models/Assessment');
+let { requireAuth } = require('../config/auth');
 
-// GET route for the Assessment List page - READ
+// GET route for the Assessment List page - READ (Public - No Auth Required)
 router.get('/', async (req, res, next) => {
     try {
         const assessments = await Assessment.find({});
         console.log(assessments);
-        res.render('Assessments/list', { title: 'Assessments', assessments: assessments });
+        res.render('Assessments/list', { 
+            title: 'Assessments', 
+            assessments: assessments 
+        });
     } catch (err) {
         console.error(err);
         res.render('Assessments/list', {
@@ -17,8 +21,9 @@ router.get('/', async (req, res, next) => {
         });
     }
 });
-// GET and POST routes for adding a new Assessment - CREATE
-router.get('/add',async(req, res, next) => {
+
+// GET route for adding a new Assessment - CREATE (Requires Authentication)
+router.get('/add', requireAuth, async(req, res, next) => {
     try {
         res.render('Assessments/add', {title: 'Add Assessments'});
     }
@@ -28,10 +33,10 @@ router.get('/add',async(req, res, next) => {
             error:'Error on server'
         })
     }
-
 });
-// POST route for adding a new Assessment - CREATE
-router.post('/add', async (req, res, next) => {
+
+// POST route for adding a new Assessment - CREATE (Requires Authentication)
+router.post('/add', requireAuth, async (req, res, next) => {
     try {
         let newAssessment = new Assessment({
             assessmentName: req.body.assessmentName,
@@ -51,18 +56,23 @@ router.post('/add', async (req, res, next) => {
         });
     }
 });
-// GET and POST routes for editing an Assessment - UPDATE
-router.get('/edit/:id', async (req, res, next) => {
+
+// GET route for editing an Assessment - UPDATE (Requires Authentication)
+router.get('/edit/:id', requireAuth, async (req, res, next) => {
     try {
         const assessment = await Assessment.findById(req.params.id);
-        res.render('Assessments/edit', { title: 'Edit Assessment', assessment: assessment });
+        res.render('Assessments/edit', { 
+            title: 'Edit Assessment', 
+            assessment: assessment 
+        });
     } catch (err) {
         console.error(err);
         res.redirect('/assessments');
     }
 });
-// POST route for editing an Assessment - UPDATE
-router.post('/edit/:id', async (req, res, next) => {
+
+// POST route for editing an Assessment - UPDATE (Requires Authentication)
+router.post('/edit/:id', requireAuth, async (req, res, next) => {
     try {
         await Assessment.findByIdAndUpdate(req.params.id, {
             assessmentName: req.body.assessmentName,
@@ -80,9 +90,10 @@ router.post('/edit/:id', async (req, res, next) => {
             error: 'Error updating assessment'
         });
     }
-})
-// GET route for deleting an Assessment - DELETE
-router.get('/delete/:id', async (req, res, next) => {
+});
+
+// GET route for deleting an Assessment - DELETE (Requires Authentication)
+router.get('/delete/:id', requireAuth, async (req, res, next) => {
     try {
         await Assessment.findByIdAndDelete(req.params.id);
         res.redirect('/assessments');
@@ -91,4 +102,5 @@ router.get('/delete/:id', async (req, res, next) => {
         res.redirect('/assessments');
     }
 });
+
 module.exports = router;

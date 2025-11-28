@@ -4,13 +4,23 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-let mongoose = require('mongoose'); // add mongoose module
-let DB = require('./db'); // import the DB config file
+// Authentication modules
+let session = require('express-session');
+let passport = require('passport');
+let passportConfig = require('./passport');
+let flash = require('connect-flash');
+let cors = require('cors');
+
+let mongoose = require('mongoose');
+let DB = require('./db');
 
 var indexRouter = require('../routes/index');
 var usersRouter = require('../routes/users');
+let AssessmentRouter = require('../routes/Assessment');
+let authRouter = require('../routes/auth');
 
-let AssessmentRouter = require('../routes/Assessment'); // import the Assessment router
+// Import authentication middleware
+let { userInfo } = require('./auth');
 
 var app = express();
 
@@ -33,10 +43,30 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../../public')));
 app.use(express.static(path.join(__dirname, '../../node_modules')));
 
+// Setup CORS
+app.use(cors());
+
+// Setup express session
+app.use(session({
+  secret: process.env.SESSION_SECRET || "mySecretKey",
+  saveUninitialized: false,
+  resave: false
+}));
+
+// Initialize flash
+app.use(flash());
+
+// Initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Apply user info middleware to all routes
+app.use(userInfo);
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/assessments', AssessmentRouter); // mount the Assessment router
-
+app.use('/assessments', AssessmentRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
