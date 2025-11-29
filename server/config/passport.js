@@ -1,87 +1,76 @@
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
 const User = require('../models/User');
 
-// Serialize user for session
-passport.serializeUser(User.serializeUser());
+// Local strategy provided by passport-local-mongoose
+passport.use(User.createStrategy());
 
-// Deserialize user from session
+passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Local Strategy
-passport.use(new LocalStrategy(User.authenticate()));
+// Common handler to find or create OAuth users
+async function findOrCreateOAuthUser(profile) {
+  const email = profile.emails && profile.emails.length ? profile.emails[0].value : undefined;
+  const query = [
+    { provider: profile.provider, providerId: profile.id },
+  ];
+  if (email) {
+    query.push({ email });
+  }
 
-// Google Strategy
+  let user = await User.findOne({ $or: query });
+  if (!user) {
+    user = new User({
+      username: email || `${profile.provider}-${profile.id}`,
+      email,
+      displayName: profile.displayName || profile.username,
+      provider: profile.provider,
+      providerId: profile.id
+    });
+    await user.save();
+  } else {
+    // keep provider info in sync
+    user.provider = profile.provider;
+    user.providerId = profile.id;
+    if (email && !user.email) user.email = email;
+    if (profile.displayName && !user.displayName) user.displayName = profile.displayName;
+    await user.save();
+  }
+  return user;
+}
+
+// Google OAuth strategy
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3000/auth/google/callback"
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.GOOGLE_CALLBACK_URL
 }, async (accessToken, refreshToken, profile, done) => {
-    try {
-        // Check if user already exists
-        let user = await User.findOne({ providerId: profile.id, provider: 'google' });
-        
-        if (!user) {
-            // Check if email already exists with different provider
-            const existingUser = await User.findOne({ email: profile.emails[0].value });
-            if (existingUser) {
-                return done(null, false, { message: 'Email already registered with different method' });
-            }
-
-            // Create new user
-            user = new User({
-                username: profile.emails[0].value,
-                email: profile.emails[0].value,
-                displayName: profile.displayName,
-                provider: 'google',
-                providerId: profile.id,
-                providerData: profile._json
-            });
-            await user.save();
-        }
-        return done(null, user);
-    } catch (err) {
-        return done(err);
-    }
+  try {
+    const user = await findOrCreateOAuthUser(profile);
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
 }));
 
-// GitHub Strategy
+// GitHub OAuth strategy
 passport.use(new GitHubStrategy({
-    clientID: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: process.env.GITHUB_CALLBACK_URL || "http://localhost:3000/auth/github/callback"
+  clientID: process.env.GITHUB_CLIENT_ID,
+  clientSecret: process.env.GITHUB_CLIENT_SECRET,
+  callbackURL: process.env.GITHUB_CALLBACK_URL,
+  scope: ['user:email']
 }, async (accessToken, refreshToken, profile, done) => {
-    try {
-        // Check if user already exists
-        let user = await User.findOne({ providerId: profile.id, provider: 'github' });
-        
-        if (!user) {
-            // Get email from profile (GitHub might not provide email in profile)
-            const email = profile.emails && profile.emails[0] ? profile.emails[0].value : `${profile.username}@github.com`;
-            
-            // Check if email already exists with different provider
-            const existingUser = await User.findOne({ email: email });
-            if (existingUser && existingUser.provider !== 'github') {
-                return done(null, false, { message: 'Email already registered with different method' });
-            }
-
-            // Create new user
-            user = new User({
-                username: profile.username,
-                email: email,
-                displayName: profile.displayName || profile.username,
-                provider: 'github',
-                providerId: profile.id,
-                providerData: profile._json
-            });
-            await user.save();
-        }
-        return done(null, user);
-    } catch (err) {
-        return done(err);
+  try {
+    // GitHub may not return emails without scope
+    if (!profile.emails || profile.emails.length === 0) {
+      profile.emails = [{ value: `${profile.username}@users.noreply.github.com` }];
     }
+    const user = await findOrCreateOAuthUser(profile);
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
 }));
 
 module.exports = passport;

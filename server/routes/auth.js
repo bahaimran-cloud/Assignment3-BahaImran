@@ -1,110 +1,101 @@
-let express = require('express');
-let router = express.Router();
-let passport = require('passport');
-let User = require('../models/User');
+const express = require('express');
+const passport = require('passport');
+const User = require('../models/User');
 
-// GET /auth/login - Display login page
-router.get('/login', (req, res, next) => {
-    if (!req.user) {
-        res.render('auth/login', {
-            title: 'Login',
-            messages: req.flash('loginMessage'),
-            displayName: ''
-        });
-    } else {
-        return res.redirect('/');
-    }
+const router = express.Router();
+
+// Render login page
+router.get('/login', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/assessments');
+  }
+  res.render('auth/login', { title: 'Login' });
 });
 
-// POST /auth/login - Process login
+// Local login
 router.post('/login', (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            req.flash('loginMessage', 'Authentication Error');
-            return res.redirect('/auth/login');
-        }
-        req.login(user, (err) => {
-            if (err) {
-                return next(err);
-            }
-            return res.redirect('/assessments');
-        });
-    })(req, res, next);
-});
+  const started = Date.now();
+  let responded = false;
+  const timer = setTimeout(() => {
+    if (responded) return;
+    responded = true;
+    console.warn('Login timed out after 12s');
+    req.flash('error', 'Login is taking longer than expected. Please try again.');
+    return res.redirect('/auth/login');
+  }, 12000);
 
-// GET /auth/register - Display registration page
-router.get('/register', (req, res, next) => {
-    if (!req.user) {
-        res.render('auth/register', {
-            title: 'Register',
-            messages: req.flash('registerMessage'),
-            displayName: ''
-        });
-    } else {
-        return res.redirect('/');
+  passport.authenticate('local', (err, user, info) => {
+    if (responded) return;
+    clearTimeout(timer);
+    responded = true;
+    if (err) {
+      console.error('Login error', err);
+      req.flash('error', 'Unexpected error during login.');
+      return res.redirect('/auth/login');
     }
+    if (!user) {
+      req.flash('error', info && info.message ? info.message : 'Invalid credentials.');
+      return res.redirect('/auth/login');
+    }
+    req.logIn(user, (loginErr) => {
+      if (loginErr) {
+        console.error('Login session error', loginErr);
+        req.flash('error', 'Could not start session.');
+        return res.redirect('/auth/login');
+      }
+      console.log(`Login success in ${Date.now() - started}ms`);
+      return res.redirect('/assessments');
+    });
+  })(req, res, next);
 });
 
-// POST /auth/register - Process registration
-router.post('/register', (req, res, next) => {
-    let newUser = new User({
-        username: req.body.username,
-        email: req.body.email,
-        displayName: req.body.displayName
-    });
-
-    User.register(newUser, req.body.password, (err, user) => {
-        if (err) {
-            console.log('Error: Inserting New User');
-            if (err.name === 'UserExistsError') {
-                req.flash('registerMessage', 'Registration Error: User Already Exists!');
-            } else {
-                req.flash('registerMessage', 'Server Error');
-            }
-            return res.redirect('/auth/register');
-        } else {
-            return passport.authenticate('local')(req, res, () => {
-                res.redirect('/assessments');
-            });
-        }
-    });
+// Local register
+router.get('/register', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/assessments');
+  }
+  res.render('auth/register', { title: 'Register' });
 });
 
-// GET /auth/logout - Logout user
-router.get('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) {
-            return next(err);
-        }
-        res.redirect('/');
-    });
+router.post('/register', async (req, res) => {
+  try {
+    const { username, password, email } = req.body;
+    const user = new User({ username, email, displayName: username, provider: 'local' });
+    await User.register(user, password);
+    req.flash('success', 'Account created. Please log in.');
+    res.redirect('/auth/login');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', err.message || 'Registration failed');
+    res.redirect('/auth/register');
+  }
 });
 
-// Google Authentication Routes
-router.get('/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-
+// Google OAuth
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/google/callback',
-    passport.authenticate('google', { failureRedirect: '/auth/login', failureFlash: true }),
-    (req, res) => {
-        res.redirect('/assessments');
-    }
+  passport.authenticate('google', {
+    failureRedirect: '/auth/login',
+    failureFlash: true
+  }),
+  (req, res) => res.redirect('/assessments')
 );
 
-// GitHub Authentication Routes
-router.get('/github',
-    passport.authenticate('github', { scope: ['user:email'] })
-);
-
+// GitHub OAuth
+router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 router.get('/github/callback',
-    passport.authenticate('github', { failureRedirect: '/auth/login', failureFlash: true }),
-    (req, res) => {
-        res.redirect('/assessments');
-    }
+  passport.authenticate('github', {
+    failureRedirect: '/auth/login',
+    failureFlash: true
+  }),
+  (req, res) => res.redirect('/assessments')
 );
+
+router.get('/logout', (req, res, next) => {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+});
 
 module.exports = router;

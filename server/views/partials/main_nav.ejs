@@ -30,41 +30,31 @@
             <i class="fa-solid fa-lg fa-tasks"></i> Assessments
           </a>
           <ul class="dropdown-menu">
-            <!-- View All link -->
+            <!-- View All and Add Assessment links -->
             <li><a class="dropdown-item" href="/assessments"><i class="fa-solid fa-list"></i> View All</a></li>
-            <!-- Add Assessment link - Only show if authenticated -->
-            <% if (locals.isAuthenticated) { %>
+            <!--add Assessment link -->
+            <% if (user) { %>
               <li><a class="dropdown-item" href="/assessments/add"><i class="fa-solid fa-plus"></i> Add Assessment</a></li>
+            <% } else { %>
+              <li><span class="dropdown-item text-muted"><i class="fa-solid fa-lock"></i> Login to add</span></li>
             <% } %>
           </ul>
         </li>
       </ul>
-      
-      <!-- Right side navigation -->
-      <ul class="navbar-nav ms-auto">
-        <% if (locals.isAuthenticated) { %>
-          <!-- Show user info and logout if authenticated -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <% if (user) { %>
           <li class="nav-item">
-            <a class="nav-link disabled" href="#">
-              <i class="fas fa-user"></i> Welcome, <%= displayName %>
-            </a>
+            <span class="navbar-text me-3"><i class="fa-regular fa-user"></i> <%= user.displayName || user.username %></span>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/auth/logout">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
+            <a class="nav-link" href="/auth/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
           </li>
         <% } else { %>
-          <!-- Show login/register if not authenticated -->
           <li class="nav-item">
-            <a class="nav-link" href="/auth/login">
-              <i class="fas fa-sign-in-alt"></i> Login
-            </a>
+            <a class="nav-link" href="/auth/login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/auth/register">
-              <i class="fas fa-user-plus"></i> Register
-            </a>
+            <a class="nav-link" href="/auth/register"><i class="fa-solid fa-user-plus"></i> Register</a>
           </li>
         <% } %>
       </ul>

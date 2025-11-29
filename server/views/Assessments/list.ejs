@@ -1,24 +1,15 @@
-<% include ../partials/header %>
+<% include ../partials/header %> <!-- Include header partial for consistent head section -->
 
-<div id="wrapper">
+<div id="wrapper">  <!-- Content visible in the browser's window is inside the wrapper -->
   <header>
     <h1>Assessments</h1>
     <% include ../partials/main_nav %>
   </header>
   <main class="container py-4">
+    <% include ../partials/alerts %>
     <div class="row">
         <div class=" col-md-10">
             <h1>Assessments List</h1>
-            
-            <!-- Show message if not authenticated -->
-            <% if (!locals.isAuthenticated) { %>
-              <div class="alert alert-info">
-                <i class="fas fa-info-circle"></i> 
-                You are viewing assessments in read-only mode. 
-                <a href="/auth/login" class="alert-link">Login</a> to add, edit, or delete assessments.
-              </div>
-            <% } %>
-            
             <br>
             <table class="table table-bordered table-striped table-hover table-dark">
                 <!--Header Row-->
@@ -29,9 +20,7 @@
                     <th class="text-center col-2">Due Date</th>
                     <th class="text-center col-2">Status</th>
                     <th class="text-center col-2">Notes</th>
-                    <% if (locals.isAuthenticated) { %>
-                      <th class="text-center col-2">Actions</th>
-                    <% } %>
+                    <th class="text-center col-2">Actions</th>
                 </tr>
                 <!--for/while loop-->
                 <% for (let count=0; count<assessments.length; count++) { %>
@@ -39,22 +28,22 @@
                         <td class="text-center col-2"><%= assessments[count].assessmentName %></td>
                         <td class="text-center col-2"><%= assessments[count].course %></td>
                         <td class="text-center col-2"><%= assessments[count].type %></td>
-                        <td class="text-center col-2"><%= assessments[count].dueDate %></td>
+                        <td class="text-center col-2"><%= assessments[count].dueDate ? assessments[count].dueDate.toISOString().substring(0,10) : '' %></td>
                         <td class="text-center col-2"><%= assessments[count].status %></td>
                         <td class="text-center col-2"><%= assessments[count].notes %></td>
-                        <!-- Only show actions if authenticated -->
-                        <% if (locals.isAuthenticated) { %>
-                          <td class="text-center col-2">
-                              <!-- Edit and delete buttons -->
-                              <a href="/assessments/edit/<%= assessments[count]._id %>" class="btn btn-warning btn-sm">
-                                  <i class="fas fa-edit"></i> Edit
-                              </a>
-                              <br></br>
-                              <a href="/assessments/delete/<%= assessments[count]._id %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
-                                  <i class="fas fa-trash"></i> Delete
-                              </a>
-                          </td>
-                        <% } %>
+                        <td class="text-center col-2">
+                            <% if (user) { %>
+                                <a href="/assessments/edit/<%= assessments[count]._id %>" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <br></br>
+                                <a href="/assessments/delete/<%= assessments[count]._id %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            <% } else { %>
+                                <span class="text-muted small">Login to edit/delete</span>
+                            <% } %>
+                        </td>
                     </tr>
                 <% } %>
             </table>

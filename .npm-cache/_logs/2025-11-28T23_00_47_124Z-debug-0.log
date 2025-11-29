@@ -1,0 +1,18 @@
+0 verbose cli /usr/local/bin/node /usr/local/bin/npm
+1 info using npm@11.6.1
+2 info using node@v24.11.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/bahaimran/University-Codes/HTML & CSS Fall 2025 Year 2/Assignment3/WebApplication/.npmrc
+5 silly config load:file:/Users/bahaimran/.npmrc
+6 silly config load:file:/usr/local/etc/npmrc
+7 verbose title npm install passport passport-local passport-local-mongoose express-session connect-flash cors passport-google-oauth20 passport-github2
+8 verbose argv "install" "passport" "passport-local" "passport-local-mongoose" "express-session" "connect-flash" "cors" "passport-google-oauth20" "passport-github2" "--cache" "./.npm-cache" "--no-progress"
+9 verbose logfile logs-max:10 dir:/Users/bahaimran/University-Codes/HTML & CSS Fall 2025 Year 2/Assignment3/WebApplication/.npm-cache/_logs/2025-11-28T23_00_47_124Z-
+10 verbose logfile /Users/bahaimran/University-Codes/HTML & CSS Fall 2025 Year 2/Assignment3/WebApplication/.npm-cache/_logs/2025-11-28T23_00_47_124Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 http fetch GET https://registry.npmjs.org/npm attempt 1 failed with ENOTFOUND
+14 silly idealTree buildDeps
+15 silly fetch manifest connect-flash@^0.1.1
+16 silly packumentCache full:https://registry.npmjs.org/connect-flash cache-miss
+17 http fetch GET https://registry.npmjs.org/connect-flash attempt 1 failed with ENOTFOUND

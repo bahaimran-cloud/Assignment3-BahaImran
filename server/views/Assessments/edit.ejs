@@ -1,7 +1,12 @@
 <% include ../partials/header %> <!-- Include header partial for consistent head section -->
-<% include ../partials/main_nav %> <!-- Include main nav partial for consistent nav section -->
+<div id="wrapper">
+  <header>
+    <h1>Assessments</h1>
+    <% include ../partials/main_nav %>
+  </header>
 <!-- Content -->
  <div class="container">
+    <% include ../partials/alerts %>
     <div class="row">
         <div class="offset-md-3 col-md-6">
             <h1>Edit Assessment</h1>
@@ -33,7 +38,7 @@
                 <!-- Date picker to select due date -->
                 <div class="form-group">
                     <label for="dueDate">Due Date</label>
-                    <input type="date" class="form-control" id="dueDate" name="dueDate" value="<%= assessment.dueDate  %>" required>
+                    <input type="date" class="form-control" id="dueDate" name="dueDate" value="<%= assessment.dueDate ? assessment.dueDate.toISOString().substring(0,10) : ''  %>" required>
                 </div>
                 <!-- Dropdown to select status -->
                 <div class="form-group">
@@ -64,4 +69,5 @@
         </div>
     </div>
  </div>
+</div>
 <% include ../partials/footer %>

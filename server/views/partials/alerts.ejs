@@ -1,0 +1,12 @@
+<% if (messages && (messages.error || messages.success || messages.info || messages.warning)) { %>
+  <% ['error', 'success', 'info', 'warning'].forEach(function(type) { %>
+    <% if (messages[type]) { %>
+      <% messages[type].forEach(function(msg) { %>
+        <div class="alert alert-<%= type === 'error' ? 'danger' : type %> alert-dismissible fade show mt-3" role="alert">
+          <%= msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% }) %>
+    <% } %>
+  <% }) %>
+<% } %>
