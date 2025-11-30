@@ -1,6 +1,2 @@
 node_modules
-<<<<<<< HEAD
-.envnode_modules/
-=======
 .env
->>>>>>> parent of 11fba41 (Added User Auth)

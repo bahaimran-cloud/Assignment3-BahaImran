@@ -9,10 +9,11 @@ var debug = require('debug')('webapplication:server');
 var http = require('http');
 
 /**
- * Get port from environment and store in Express.
+ * Get port/host from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+var host = process.env.HOST || (process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1');
 app.set('port', port);
 
 /**
@@ -22,10 +23,10 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Listen on provided port/host.
  */
 
-server.listen(port);
+server.listen(port, host);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -60,7 +61,7 @@ function onError(error) {
 
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
-    : 'Port ' + port;
+    : 'Port ' + port + ' on ' + host;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {

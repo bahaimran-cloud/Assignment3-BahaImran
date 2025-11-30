@@ -8,6 +8,12 @@ var flash = require('connect-flash');
 var passport = require('passport');
 var cors = require('cors');
 
+const isProduction = process.env.NODE_ENV === 'production';
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
+
 let mongoose = require('mongoose'); // add mongoose module
 let DB = require('./db'); // import the DB config file
 
@@ -42,12 +48,31 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors());
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
+
+if (isProduction) {
+  app.set('trust proxy', 1); // honor X-Forwarded-* from a reverse proxy
+}
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'dev_session_secret',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  proxy: isProduction,
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: isProduction
+  }
 }));
 app.use(flash());
 app.use(passport.initialize());
